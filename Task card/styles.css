@@ -20,6 +20,7 @@ main {
     padding: 0 20px 20px 20px;
     background-color: aliceblue;
     border-radius: 10px;
+    
 }
 .test-todo-tags{
     display: flex;
