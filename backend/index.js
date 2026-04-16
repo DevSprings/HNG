@@ -1,11 +1,8 @@
 import express from "express";
+import cors from "cors";
 const app = express();
 const PORT =3000;
-
-app.get("/", (req, res)=> {
-  res.send("Hello!")
-});
-
+app.use(cors());
 app.get("/api/classify/", async (req, res)=> {
   const name = req.query.name;
   try {
@@ -34,6 +31,7 @@ app.get("/api/classify/", async (req, res)=> {
     }
     data.sample_size= data.count;
     data.is_confident=data.probability >= 0.7 && data.sample_size >= 100 ? true : false;
+    data.processed_at = new Date().toISOString();
     delete data.count;
     res.status(200).json({
       status: "success", 
@@ -51,3 +49,5 @@ app.get("/api/classify/", async (req, res)=> {
 app.listen(PORT, ()=> {
   console.log(`Hello, running on server http://localhost:${PORT}`)
 });
+
+export default app;
