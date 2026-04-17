@@ -9,10 +9,36 @@ const editTitle = document.getElementById("test-todo-edit-title-input");
 const editDescription = document.getElementById("test-todo-edit-description-input");
 const priority = document.getElementById("test-todo-priority-value");
 const selectPriority = document.getElementById("test-todo-priority-options");
+const dueDate = document.querySelector(".test-todo-due-date");
+const timeRemaining = document.querySelector(".test-todo-time-remaining");
 
-selectPriority.addEventListener("change", ()=>{
-priority.innerText = "Priority: " + selectPriority.value;
-selectPriority.value = "";
+window.addEventListener("DOMContentLoaded", calcTime);
+
+setInterval(calcTime, 60000)
+
+function calcTime() {
+    const timeDiff = new Date(dueDate.getAttribute("datetime")) - (new Date()).getTime();
+    const dayRemaining = Math.floor(Math.abs(timeDiff) / (1000 * 60 * 60 * 24));
+    const hoursElapse = Math.floor(Math.abs(timeDiff) / (1000 * 60 * 60));
+    if (timeDiff > 0) {
+        if (dayRemaining == 1) {
+            timeRemaining.innerText = "Time remaining: Due tomorrow";
+        } else {
+            timeRemaining.innerText = `Time remaining: Due in ${dayRemaining} days`;
+        }
+    } else {
+        if (hoursElapse == 0) {
+            timeRemaining.innerText = "Time remaining: Due now!";
+            statusBadge.innerText = "Status: In Progress";
+        } else {
+            timeRemaining.innerText = `Time remaining: Over due by ${hoursElapse} hours`;
+        }
+
+    }
+}
+selectPriority.addEventListener("change", () => {
+    priority.innerText = "Priority: " + selectPriority.value;
+    selectPriority.value = "";
 })
 
 toggle.addEventListener("change", () => {

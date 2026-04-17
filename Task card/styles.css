@@ -1,3 +1,8 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
 body {
     position: relative;
     display: flex;
@@ -13,17 +18,18 @@ main {
     justify-content: center;
     align-items: center;
     height: 100%;
+    gap: 20px;
 }
 
 .test-todo-card {
     display: flex;
     flex-direction: column;
+    gap: 10px;
     max-width: 500px;
     height: auto;
-    padding: 0 20px 20px 20px;
+    padding: 20px;
     background-color: aliceblue;
     border-radius: 10px;
-
 }
 
 .test-todo-tags {
