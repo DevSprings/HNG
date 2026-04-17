@@ -28,6 +28,7 @@ main {
     max-width: 500px;
     height: auto;
     padding: 20px;
+    margin-inline: 20px;
     background-color: aliceblue;
     border-radius: 10px;
 }
