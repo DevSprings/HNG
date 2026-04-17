@@ -1,0 +1,61 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgb(59, 3, 59);
+   font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#test-profile-card{
+    max-width: 400px;
+    padding: 24px;
+    margin-inline: 24px;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#test-user-avater{
+    max-width: 200px;
+    height: auto;
+    object-fit: cover;
+    margin-block: 10px;
+}
+
+#test-user-social-links{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#test-user-social-links a{
+    text-decoration: none;
+    color: rgb(59, 3, 59);
+}
+
+#test-user-social-links a:hover{
+    color: rgb(166, 22, 166);
+}
+
+#test-user-time{
+    background-color: rgb(59, 3, 59);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#test-user-bio {
+    text-align: justify;
+}

@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="wclassth=device-wclassth, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task-Card</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -20,7 +20,10 @@
                 <p class="test-todo-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quidem
                     consectetur accusantium, facilis inventore reprehenderit incidunt et omnis eos fuga magni debitis
                     nostrum?</p>
-                <strong class="test-todo-priority" aria-label="priority">Priority: 🟡</strong><br>
+                <strong class="test-todo-priority" aria-label="priority">
+                    <span id="test-todo-priority-value">Priority: 🟢</span>
+                </strong>
+                <br>
                 <time class="test-todo-due-date" datetime="2026-04-13T12:00">Due date: April 13, 2026 @ 12:00 PM</time>
                 <p class="test-todo-time-remaining">Time remaining: Due in 3 days</p>
                 <p class="test-todo-status" aria-label="status">Status: Pending</p>
@@ -36,13 +39,19 @@
         </section>
 
         <section role="region" class="test-todo-edit" hidden>
-            <form class="test-todo-edit-form">
-                <label for="test-todo-edit-title-input" >Title:*</label><br>
+            <div role="form" class="test-todo-edit-form">
+                <label for="test-todo-edit-title-input">Title:*</label><br>
                 <input type="text" id="test-todo-edit-title-input" required placeholder="Title"><br><br>
                 <label for="test-todo-edit-description-input">Description:*</label><br>
-                <textarea id="test-todo-edit-description-input" required placeholder="Description" rows="5"></textarea><br>
-                    <button type="submit" id="test-todo-save-edit">save</button>
-            </form>
+                <textarea id="test-todo-edit-description-input" required placeholder="Description"
+                    rows="5"></textarea><br>
+                <select id="test-todo-priority-options" aria-live="polite">
+                    <option value="" selected>set priority</option>
+                    <option value="🟢">low</option>
+                    <option value="🟡">medium</option>
+                    <option value="🔴">high</option>
+                </select>
+            </div>
 
         </section>
     </main>
