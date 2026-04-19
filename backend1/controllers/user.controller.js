@@ -190,7 +190,7 @@ export async function deleteUser(req, res) {
                 });
             }
 
-            const queryText = `DELETE FROM users WHERE id = $1 RETURNING data`;
+            const queryText = `DELETE FROM users WHERE id = $1 RETURNING *`;
             const data = await pool.query(queryText, [id]);
 
             if(data.rows.length === 0) {
