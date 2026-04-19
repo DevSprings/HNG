@@ -11,6 +11,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors())
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Hello!);
+}
+);
 app.post("/api/profiles/", createUser);
 app.get("/api/profiles/:id", getUser);
 app.get("/api/profiles/", getUsers);
