@@ -37,33 +37,27 @@ export async function createUser(req, res) {
             const agifyData = await agifyResponse.json();
             const nationalizeData = await nationalizeResponse.json();
 
-            if (!genderizeResponse.ok) {
-                return res.status(genderizeResponse.status).json({
+            if (!genderizeResponse.ok || !genderizeData.gender) {
+                return res.status(502).json({
                     status: "error",
-                    message: `${genderizeResponse.status} Upstream error or server failure`
+                    message: `Genderize api returned an invalid response`
                 });
             }
 
-            if (!agifyResponse.ok) {
-                return res.status(agifyResponse.status).json({
+            if (!agifyResponse.ok || !agifyData.age) {
+                return res.status(502).json({
                     status: "error",
-                    message: `${agifyResponse.status} Upstream error or server failure`
+                    message: `Agify api returned an invalid response`
                 });
             }
 
-            if (!nationalizeResponse.ok) {
+            if (!nationalizeResponse.ok || nationalizeData == "no country data") {
                 return res.status(nationalizeResponse.status).json({
                     status: "error",
-                    message: `${nationalizeResponse.status} Upstream error or server failure`
+                    message: `Nationalize api returned an invalid response`
                 });
             }
 
-            if(!genderizeData.gender || !agifyData.age || nationalizeData == "no country data") {
-                return res.status(502).json({
-                    "status": "error",
-                    "message": "Exernal api returned an invalid response"
-                })
-            }
             const age = agifyData.age;
             const data = {
                 "id": uuidv7(),
@@ -99,6 +93,77 @@ export async function createUser(req, res) {
         }
 }
 
-export async function name(params) {
-    
+export async function getUser(req, res) {
+    const id = req.query.id;
+    try {
+        if (!id) {
+                return res.status(400).json({
+                    "status": "error",
+                    "message": "400 Bad request: missing or empty id"
+                });
+            }
+
+            if (!isNaN(id)) {
+                return res.status(422).json({
+                    "status": "error",
+                    "message": "422 Unprocessable Entity: id is not a string"
+                });
+            }
+
+            const queryText = `SELECT * FROM users WHERE id = $1`;
+            const data = await pool.query(queryText, [id]);
+
+            if(!data.rows[0].id) {
+                return res.status(404).json({
+                    "status": "error",
+                    "message": "404 Not Found: Profile not found"
+                })
+            }
+
+            return res.json({
+                "status": "success",
+                "data": data.rows[0]
+            })
+    } catch (error) {
+        return res.status(500).json({
+                "status": "error",
+                "message": error.message
+            });
+    }
+}
+
+export async function deleteUser(req, res) {
+    const {id} = req.body;
+    try {
+        if (!id) {
+                return res.status(400).json({
+                    "status": "error",
+                    "message": "400 Bad request: missing or empty id"
+                });
+            }
+
+            if (!isNaN(id)) {
+                return res.status(422).json({
+                    "status": "error",
+                    "message": "422 Unprocessable Entity: id is not a string"
+                });
+            }
+
+            const queryText = `DELETE * FROM users WHERE id = $1 RETURNING name`;
+            const name = await pool.query(queryText, [id]);
+
+            if(!name) {
+                return res.status(404).json({
+                    "status": "error",
+                    "message": "404 Not Found: Profile not found"
+                })
+            }
+
+            return res.status(204).send();
+    } catch (error) {
+        return res.status(500).json({
+                "status": "error",
+                "message": error.message
+            });
+    }
 }
