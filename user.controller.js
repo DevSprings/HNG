@@ -14,7 +14,7 @@ app.use(express.json());
 app.post("/api/profiles/", createUser);
 app.get("/api/profiles/:id", getUser);
 app.get("/api/profiles/", getUsers);
-app.delete("/api/profiles/", deleteUser);
+app.delete("/api/profiles/:id", deleteUser);
 
 app.listen(PORT, ()=>{
   console.log(`Server is running at http://localhost:${PORT}`)
