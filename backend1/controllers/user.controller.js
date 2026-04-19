@@ -174,7 +174,7 @@ export async function getUsers(req, res) {
 }
 
 export async function deleteUser(req, res) {
-    const id = req.query.id;
+    const id = req.params.id;
     try {
         if (!id) {
                 return res.status(400).json({
