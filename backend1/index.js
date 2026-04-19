@@ -1,6 +1,6 @@
 import express, { json } from "express";
 import dotenv from "dotenv";
-import { createUser, getUser } from "./controllers/user.controller.js";
+import { createUser, deleteUser, getUser, getUsers } from "./controllers/user.controller.js";
 import cors from "cors";
 
 dotenv.config();
@@ -12,7 +12,9 @@ app.use(cors())
 app.use(express.json());
 
 app.post("/api/profiles/", createUser);
-app.get("/api/profiles/", getUser);
+app.get("/api/profiles/:id", getUser);
+app.get("/api/profiles/", getUsers);
+app.delete("/api/profiles/", deleteUser);
 
 app.listen(PORT, ()=>{
   console.log(`Server is running at http://localhost:${PORT}`)

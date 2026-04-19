@@ -94,7 +94,7 @@ export async function createUser(req, res) {
 }
 
 export async function getUser(req, res) {
-    const id = req.query.id;
+    const id = req.params.id;
     try {
         if (!id) {
                 return res.status(400).json({
@@ -113,7 +113,7 @@ export async function getUser(req, res) {
             const queryText = `SELECT * FROM users WHERE id = $1`;
             const data = await pool.query(queryText, [id]);
 
-            if(!data.rows[0].id) {
+            if(data.rows.length === 0) {
                 return res.status(404).json({
                     "status": "error",
                     "message": "404 Not Found: Profile not found"
@@ -132,8 +132,49 @@ export async function getUser(req, res) {
     }
 }
 
+export async function getUsers(req, res) {
+    const {gender, country_id, age_group} = req.query;
+    try {
+        let queryText = "SELECT * FROM users";
+        const queryParams = [];
+        const queryConditions = [];
+
+        if(gender) {
+            queryParams.push(gender);
+            queryConditions.push(`gender = $${queryParams.length}`)
+        }
+
+        if(country_id) {
+            queryParams.push(country_id);
+            queryConditions.push(`country_id = $${queryParams.length}`)
+        }
+
+        if(age_group) {
+            queryParams.push(age_group);
+            queryConditions.push(`age_group = $${queryParams.length}`)
+        }
+
+        if(queryParams.length > 0) {
+            queryText += " WHERE " + queryConditions.join(" AND ");
+        }
+
+        const data = await pool.query(queryText, queryParams);
+
+        return res.status(200).json({
+            "status": "success",
+            "count": data.rows.length,
+            "data": data.rows
+        })
+    } catch (error) {
+        return res.status(500).json({
+                "status": "error",
+                "message": error.message
+            });
+    }
+}
+
 export async function deleteUser(req, res) {
-    const {id} = req.body;
+    const id = req.query.id;
     try {
         if (!id) {
                 return res.status(400).json({
@@ -149,16 +190,16 @@ export async function deleteUser(req, res) {
                 });
             }
 
-            const queryText = `DELETE * FROM users WHERE id = $1 RETURNING name`;
-            const name = await pool.query(queryText, [id]);
+            const queryText = `DELETE FROM users WHERE id = $1 RETURNING data`;
+            const data = await pool.query(queryText, [id]);
 
-            if(!name) {
+            if(data.rows.length === 0) {
                 return res.status(404).json({
                     "status": "error",
                     "message": "404 Not Found: Profile not found"
                 })
             }
-
+            console.log(`User with name ${data.rows[0].name} is deleted!`)
             return res.status(204).send();
     } catch (error) {
         return res.status(500).json({

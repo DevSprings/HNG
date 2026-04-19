@@ -14,11 +14,11 @@ database: process.env.DB_NAME
 
 pool.on("connect", ()=> {
     console.log("connected to DB")
-})
+});
 
 pool.on("error", (error)=> {
     console.log(error);
     process.exit(-1);
-})
+});
 
 export default pool;
